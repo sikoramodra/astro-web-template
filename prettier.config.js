@@ -1,11 +1,16 @@
-/** @type import("prettier").Config} */
+/** @type {import("prettier").Config} */
 export default {
-  $schema: 'https://json.schemastore.org/prettierrc',
-  semi: true,
-  tabWidth: 2,
-  singleQuote: true,
   printWidth: 80,
+  tabWidth: 2,
+  useTabs: false,
+  semi: true,
+  singleQuote: true,
+  quoteProps: 'consistent',
   trailingComma: 'all',
+  bracketSpacing: true,
+  objectWrap: 'preserve',
+  bracketSameLine: false,
+  arrowParens: 'always',
   plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
   overrides: [
     {

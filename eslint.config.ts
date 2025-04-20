@@ -1,13 +1,13 @@
-import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import js from '@eslint/js';
 import ts from 'typescript-eslint';
 import astro from 'eslint-plugin-astro';
+import astroParser from 'astro-eslint-parser';
 import prettier from 'eslint-plugin-prettier';
 import * as pluginImportX from 'eslint-plugin-import-x';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
-export default defineConfig([
+export default ts.config(
   js.configs.recommended,
   // eslint-disable-next-line import-x/no-named-as-default-member
   ts.configs.recommended,
@@ -21,12 +21,12 @@ export default defineConfig([
     },
   },
   {
-    plugins: { prettier: prettier, 'simple-import-sort': simpleImportSort },
+    plugins: { 'prettier': prettier, 'simple-import-sort': simpleImportSort },
   },
   {
     files: ['**/*.astro'],
     languageOptions: {
-      parser: astro.parser,
+      parser: astroParser,
       parserOptions: {
         // eslint-disable-next-line import-x/no-named-as-default-member
         parser: ts.parser,
@@ -43,4 +43,4 @@ export default defineConfig([
   {
     ignores: ['dist/**', '**/*.d.ts', '.github/'],
   },
-]);
+);

@@ -21,6 +21,9 @@ importers:
       '@eslint/js':
         specifier: ^9.25.0
         version: 9.25.0
+      astro-eslint-parser:
+        specifier: ^1.2.2
+        version: 1.2.2
       eslint:
         specifier: ^9.25.0
         version: 9.25.0(jiti@2.4.2)
