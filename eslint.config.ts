@@ -1,27 +1,44 @@
-import globals from 'globals';
+import { fileURLToPath } from 'node:url';
+
+import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
-import ts from 'typescript-eslint';
-import astro from 'eslint-plugin-astro';
 import astroParser from 'astro-eslint-parser';
-import prettier from 'eslint-plugin-prettier';
+import prettier from 'eslint-config-prettier';
+import astro from 'eslint-plugin-astro';
 import * as pluginImportX from 'eslint-plugin-import-x';
+import prettierPlugin from 'eslint-plugin-prettier';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
+import ts from 'typescript-eslint';
+
+const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default ts.config(
+  includeIgnoreFile(gitignorePath),
   js.configs.recommended,
   // eslint-disable-next-line import-x/no-named-as-default-member
-  ts.configs.recommended,
+  ...ts.configs.recommended,
+  prettier,
   // eslint-disable-next-line import-x/no-named-as-default-member
-  astro.configs.recommended,
+  ...astro.configs.recommended,
   pluginImportX.flatConfigs.recommended,
   pluginImportX.flatConfigs.typescript,
   {
+    plugins: {
+      'prettier': prettierPlugin,
+      'simple-import-sort': simpleImportSort,
+    },
     languageOptions: {
       globals: { ...globals.browser, ...globals.node },
     },
-  },
-  {
-    plugins: { 'prettier': prettier, 'simple-import-sort': simpleImportSort },
+    rules: {
+      'no-undef': 'off',
+      'simple-import-sort/imports': 'warn',
+      'simple-import-sort/exports': 'warn',
+      'import-x/first': 'warn',
+      'import-x/newline-after-import': 'warn',
+      'import-x/no-duplicates': 'warn',
+    },
   },
   {
     files: ['**/*.astro'],
@@ -36,11 +53,5 @@ export default ts.config(
         project: './tsconfig.json',
       },
     },
-    // rules: {
-    //   "no-undef": "off", // Disable "not defined" errors for specific Astro types that are globally available (ImageMetadata)
-    // },
-  },
-  {
-    ignores: ['dist/**', '**/*.d.ts', '.github/'],
   },
 );
